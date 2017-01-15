@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router';
 import axios from 'axios';
 import ListItem from './ListItem';
 
@@ -13,14 +13,14 @@ export default class Listing extends Component {
 	}
 
 	componentDidMount() {
-		axios.get('/posts/by-subreddit/' + this.props.params.subredditId).then(posts => {
+		axios.get('/api/' + this.props.params.subredditId).then(posts => {
 			this.setState({ posts: posts.data });
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.params.subredditId !== nextProps.params.subredditId) {
-			axios.get('/posts/by-subreddit/' + nextProps.params.subredditId).then(posts => {
+	componentWillReceiveProps(props) {
+		if (this.props.params.subredditId !== props.params.subredditId) {
+			axios.get('/api/' + props.params.subredditId).then(posts => {
 				this.setState({ posts: posts.data });
 			});
 		}
@@ -28,9 +28,15 @@ export default class Listing extends Component {
 
 	render() {
 		return (
-			<ul>
-				{this.state.posts.map(post => <ListItem key={post._id} post={post} />)}
-			</ul>
+			<div>
+				<div>
+					<h1>{this.props.params.subredditId}</h1>
+				</div>
+					<ul>
+						{this.state.posts.map(post => <ListItem key={post._id} post={post} id={post._id} subredditId={post.subredditId}/>)}
+					</ul>
+					<button><Link to={this.props.params.subredditId + '/new'}>Add Post</Link></button>
+			</div>
 		);
 	}
 }

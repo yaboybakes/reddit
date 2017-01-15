@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 export default class ListItem extends Component {
 	render() {
+		let url = '/'+this.props.subredditId+'/'+this.props.id;
 		return (
 			<li>
-				<h2>{this.props.post.title}</h2>
-				<p>{this.props.post.content}</p>
+				<div>
+					<div>
+						<Link to={url}><h1>{this.props.post.title}</h1></Link>
+					</div>
+				</div>
 			</li>
 		);
 	}
